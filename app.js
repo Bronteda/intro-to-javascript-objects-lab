@@ -480,12 +480,100 @@ console.log(game.items)
 
 /*
 Exercise 20
-Copy the `catchPokemon` method that you just wrote above, and paste it below. Modify is so that you can just pass in the name of a Pokemon instead of an entire object, and the method will look up the Pokemon from the data set for you.
+Copy the `catchPokemon` method that you just wrote above, and paste it below. 
+Modify is so that you can just pass in the name of a Pokemon instead of an entire object, 
+and the method will look up the Pokemon from the data set for you.
 
-The string passed in should be allowed to be any case (for example, if the string 'PiKacHU' is passed to the function, it should match to 'Pikachu' in the data set). 
+The string passed in should be allowed to be any case 
+(for example, if the string 'PiKacHU' is passed to the function, it should match to 'Pikachu' in the data set). 
 
-If there is not a match, then return a string noting that the selected Pokemon does not exist. Ensure you do not decrement the pokeball count if an invalid Pokemon name is passed in, and also ensure that the Pokemon isn't added to the `game.party` or the `game.collection`.
+If there is not a match, then return a string noting that the selected Pokemon does not exist. 
+Ensure you do not decrement the pokeball count if an invalid Pokemon name is passed in, and also ensure that the 
+Pokemon isn't added to the `game.party` or the `game.collection`.
 
 Solve Exercise 20 here:
 */
+console.log("------Exercise 20---------\n")
+game.collection = [];
+//clearing the party array so I can see that Pokemons are being added to both collection and party
+//game.party=[];
+//adding more quantity to make sure it hits the you do not have enough pokeballs message
+game.items[1].quantity = 10;
 
+game.catchPokemon = function (pokemonObjName){
+    
+    const pokemonObj = pokemon.find(obj => obj.name.toLowerCase() === pokemonObjName.toLowerCase());
+
+    if(!pokemonObj){
+        console.log(`This Pokemon: ${pokemonObjName} does not exist`)
+    }else{
+        //Need to use a for loop to get the index of the array Items
+        for ( let i =0; i < game.items.length; i++){
+            if(game.items[i].name === 'pokeball'){
+                if (game.items[i].quantity){
+                    game.items[i].quantity -= 1;
+                    if(game.party.length < 6){
+                        game.party.push(pokemonObj);
+                        console.log(`${pokemonObjName} added to party!`);
+                    }else {
+                        game.collection.push(pokemonObj);
+                        console.log(`${pokemonObjName} added to Collection!`);
+                    }
+                }else {
+                    console.log("You do not have enough Pokeballs to catch that Pokemon")
+                }
+            }
+
+        }     
+
+    }
+     
+}
+// Want to catch a few Pokemon to ensure pokeball decreasing each time 
+
+game.catchPokemon('PiKacHU');
+
+console.log(game);
+console.log(game.items)
+
+/*
+Exercise 21
+Dynamically construct an object with the existing `pokemon` data sorted by the different pokemon types. 
+The object will have this structure:
+
+{
+  grass: [
+    { number: 1, name: 'Bulbasaur', type: 'grass', hp: 45, starter: true },
+    { number: 2, name: 'Ivysaur', type: 'grass', hp: 60, starter: false },
+    { number: 3, name: 'Venusaur', type: 'grass', hp: 80, starter: false },
+    * more grass type Pokemon objects...
+  ],
+  fire: [
+    { number: 4, name: 'Charmander', type: 'fire', hp: 39, starter: true },
+    * more fire type Pokemon objects...
+  ],
+  water: [
+    * water type Pokemon objects...
+  ],
+  * etc... until there is an array for every Pokemon type!
+}
+
+Log the object when it's constructed.
+
+Solve Exercise 21 here:
+*/
+console.log("------Exercise 21---------\n")
+
+const pokemonByTypes = {};
+//iterate through the pokemon object
+for (let i =0; i< pokemon.length; i++){
+    let objType = pokemon[i].type;
+// add each element as an array in the pokemonByTypes and make sure ot to duplicate
+    if(!pokemonByTypes[objType]){
+        pokemonByTypes[objType]=[];
+    }
+//push the correct object per correct type 
+    pokemonByTypes[objType].push(pokemon[i]);
+}
+
+console.log(pokemonByTypes);
